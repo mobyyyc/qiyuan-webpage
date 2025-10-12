@@ -6,8 +6,8 @@ export default function Home() {
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start w-full max-w-[900px]">
         <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-center sm:text-left">
           Hi, I'm {" "}
-          <span className="bg-gradient-to-r from-[#0070f3] via-[#7928ca] to-[#ff0080] bg-clip-text text-transparent">
-            Qiyuan Cai!
+          <span className="bg-gradient-to-r from-[#278cff] via-[#b061ff] to-[#ff53a9] bg-clip-text text-transparent">
+            Qiyuan Cai
           </span>
         </h1>
         <p className="text-lg text-center sm:text-left max-w-[600px]">
