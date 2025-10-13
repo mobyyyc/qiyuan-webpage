@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #1C1C1C;
   --foreground: #171717;
 }
 
@@ -14,7 +14,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #1C1C1C;
     --foreground: #ededed;
   }
 }
@@ -27,4 +27,34 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Theme classes applied to <html> by the ThemeToggle component */
+html.light {
+  --background: #ffffff;
+  --foreground: #000000;
+}
+
+html.dark {
+  --background: #1C1C1C;
+  --foreground: #ededed;
+}
+
+/* small theme toggle button */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  width: 36px;
+  border-radius: 9999px;
+  border: 1px solid rgba(0,0,0,0.06);
+  background: var(--background);
+  color: var(--foreground);
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.theme-toggle:hover {
+  filter: brightness(1.06);
 }
