@@ -81,3 +81,7 @@ ScaffoldingReadMe.txt
 /server/bin/
 /server/obj/
 
+
+# VS Code workspace file
+qiyuan-webpage.code-workspace
+
