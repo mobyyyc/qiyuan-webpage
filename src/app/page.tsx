@@ -11,7 +11,7 @@ export default function Home() {
           </span>
         </h1>
         <p className="text-lg text-center sm:text-left max-w-[600px]">
-          Aspiring software developer with a love for AI.
+          Aspiring Software Developer with a Passion for Artificial Intelligence
         </p>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">

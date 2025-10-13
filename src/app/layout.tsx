@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Qiyuan Cai",
-  description: "Qiyuan Cai — Aspiring software developer with a love for AI",
+  description: "Qiyuan Cai — Aspiring Software Developer with a Passion for Artificial Intelligence",
 };
 
 export default function RootLayout({
