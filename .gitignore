@@ -39,3 +39,45 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ------------------------
+# .NET / ASP.NET Core
+# ------------------------
+
+# Build results
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# dotnet publish
+publish/
+
+# NuGet
+/*.nupkg
+*/project.lock.json
+*/project.fragment.lock.json
+*/artifacts/
+
+# MSBuild
+*.dotCover
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# EF
+*.db
+*.db-journal
+
+# server-specific (keep server build artifacts out)
+/server/bin/
+/server/obj/
+
