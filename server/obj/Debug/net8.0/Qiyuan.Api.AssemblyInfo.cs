@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Qiyuan.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+67342186c5c09919aa2275fd924b3ff13f788482")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e5ae654624ed36c40a4a52c5cc577dc232571fee")]
 [assembly: System.Reflection.AssemblyProductAttribute("Qiyuan.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Qiyuan.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
