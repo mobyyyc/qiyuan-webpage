@@ -1,11 +1,50 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
+type Project = {
+  id: number;
+  title: string;
+  description: string;
+  url?: string | null;
+  repo?: string | null;
+};
+
+const apiBase = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5041";
+
 export default function Home() {
+  const [projects, setProjects] = useState<Project[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    fetch(`${apiBase}/api/projects`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data: Project[]) => {
+        if (mounted) setProjects(data);
+      })
+      .catch((err) => {
+        if (mounted) setError(String(err));
+      })
+      .finally(() => {
+        if (mounted) setLoading(false);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-start justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start w-full max-w-[900px]">
         <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-center sm:text-left">
-          Hi, I'm {" "}
+          Hi, I&apos;m {" "}
           <span className="bg-gradient-to-r from-[#278cff] via-[#b061ff] to-[#ff53a9] bg-clip-text text-transparent">
             Qiyuan Cai
           </span>
@@ -33,7 +72,7 @@ export default function Home() {
         <section id="about" className="w-full mt-2">
           <div className="rounded-lg border border-black/[.04] dark:border-white/[.06] p-4 bg-background/40">
             <p className="text-base text-muted-foreground max-w-[720px]">
-              I'm a software developer focusing on web applications and machine learning experiments. I enjoy building small, elegant apps and exploring AI-driven interfaces. Below are a few highlights — click a project to learn more.
+              I&apos;m a software developer focusing on web applications and machine learning experiments. I enjoy building small, elegant apps and exploring AI-driven interfaces. Below are a few highlights — click a project to learn more.
             </p>
           </div>
         </section>
@@ -42,22 +81,43 @@ export default function Home() {
         <section id="projects" className="w-full mt-4">
           <h2 className="text-2xl font-semibold text-left">Projects</h2>
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <article className="rounded-lg border border-black/[.06] dark:border-white/[.08] p-4 bg-background/50">
-              <h3 className="font-medium text-lg">Project One</h3>
-              <p className="text-sm mt-2 text-muted-foreground">Brief description of project one. Built with React and Next.js.</p>
-              <div className="mt-3 flex gap-2">
-                <a className="text-sm font-medium hover:underline" href="#">View</a>
-                <a className="text-sm font-medium text-muted-foreground" href="#">Source</a>
-              </div>
-            </article>
-            <article className="rounded-lg border border-black/[.06] dark:border-white/[.08] p-4 bg-background/50">
-              <h3 className="font-medium text-lg">Project Two</h3>
-              <p className="text-sm mt-2 text-muted-foreground">Brief description of project two. ML experiments and demos.</p>
-              <div className="mt-3 flex gap-2">
-                <a className="text-sm font-medium hover:underline" href="#">View</a>
-                <a className="text-sm font-medium text-muted-foreground" href="#">Source</a>
-              </div>
-            </article>
+            {loading && (
+              <div className="col-span-full p-4">Loading projects…</div>
+            )}
+            {error && (
+              <div className="col-span-full p-4 text-red-600">Error loading projects: {error}</div>
+            )}
+            {!loading && !error && projects?.length === 0 && (
+              <div className="col-span-full p-4">No projects yet.</div>
+            )}
+            {!loading && !error && projects?.map((p) => (
+              <article key={p.id} className="rounded-lg border border-black/[.06] dark:border-white/[.08] p-4 bg-background/50">
+                <h3 className="font-medium text-lg">{p.title}</h3>
+                <p className="text-sm mt-2 text-muted-foreground">{p.description}</p>
+                <div className="mt-5 flex gap-2">
+                  {/* Single rounded button matching site style: View Source */}
+                  {(p.repo ?? p.url) ? (
+                    <a
+                      className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-9 px-3"
+                      href={p.repo ?? p.url ?? '#'}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <p className="text-sm text-muted-foreground">View Source</p>
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled
+                      aria-disabled="true"
+                      className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-9 px-3"
+                    >
+                      <span className="text-sm text-muted-foreground">View Source</span>
+                    </button>
+                  )}
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 
