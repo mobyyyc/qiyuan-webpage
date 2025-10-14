@@ -3,41 +3,23 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
-type Project = {
-  id: number;
-  title: string;
-  description: string;
-  url?: string | null;
-  repo?: string | null;
-};
-
-const apiBase = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5041";
-
 export default function Home() {
-  const [projects, setProjects] = useState<Project[] | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Use local projects data moved from the old .NET backend
+  const [projects, setProjects] = useState<import("../data/projects").Project[] | null>(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let mounted = true;
-    setLoading(true);
-    fetch(`${apiBase}/api/projects`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((data: Project[]) => {
-        if (mounted) setProjects(data);
-      })
-      .catch((err) => {
-        if (mounted) setError(String(err));
-      })
-      .finally(() => {
-        if (mounted) setLoading(false);
+    // Load static data synchronousy
+    try {
+      // Dynamic import keeps the data side-effect free for SSR/Client boundaries
+      // and avoids circular imports in some setups.
+      void import("../data/projects").then((mod) => {
+        setProjects(mod.projects);
       });
-    return () => {
-      mounted = false;
-    };
+    } catch (err) {
+      setError(String(err));
+    }
   }, []);
 
   return (
