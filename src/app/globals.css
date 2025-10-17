@@ -87,6 +87,24 @@ html.light .mt-5 button.rounded-full.border {
   border-color: rgba(0, 0, 0, 0.08) !important;
 }
 
+/* Language badges: ensure high contrast in both themes. In light mode use pure black for text and a visible black border; in dark mode use white. */
+.language-badge {
+  color: var(--foreground);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+html.light .language-badge {
+  /* solid black text and border in light mode */
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+html.dark .language-badge {
+  /* white text and subtle white border in dark mode */
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
 /* Navbar: stronger bottom border in light mode to match dark-mode visibility */
 html.light header {
   border-bottom-color: rgba(0, 0, 0, 0.12) !important;

@@ -1,26 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
+import { projects } from "../data/projects";
 
 export default function Home() {
-  // Use local projects data moved from the old .NET backend
-  const [projects, setProjects] = useState<import("../data/projects").Project[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    // Load static data synchronousy
-    try {
-      // Dynamic import keeps the data side-effect free for SSR/Client boundaries
-      // and avoids circular imports in some setups.
-      void import("../data/projects").then((mod) => {
-        setProjects(mod.projects);
-      });
-    } catch (err) {
-      setError(String(err));
-    }
-  }, []);
+  // Projects are static; render directly from the imported data
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-start justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
@@ -63,21 +48,37 @@ export default function Home() {
         <section id="projects" className="w-full mt-4">
           <h2 className="text-2xl font-semibold text-left">Projects</h2>
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {loading && (
-              <div className="col-span-full p-4">Loading projects…</div>
-            )}
-            {error && (
-              <div className="col-span-full p-4 text-red-600">Error loading projects: {error}</div>
-            )}
-            {!loading && !error && projects?.length === 0 && (
-              <div className="col-span-full p-4">No projects yet.</div>
-            )}
-            {!loading && !error && projects?.map((p) => (
-              <article key={p.id} className="rounded-lg border border-black/[.06] dark:border-white/[.08] p-4 bg-background/50">
-                <h3 className="font-medium text-lg">{p.title}</h3>
+            {(projects ?? []).map((p) => (
+              <article key={p.id} className="rounded-lg border border-black/[.06] dark:border-white/[.08] p-4 bg-background/50 flex flex-col justify-between">
+                <h3 className="font-medium text-lg"><b>{p.title}</b></h3>
+                {p.subtitle ? (
+                  <div className="text-xs text-muted-foreground mt-1">{p.subtitle}</div>
+                ) : null}
+                {/* language badges */}
+                {p.languages && p.languages.length > 0 ? (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {p.languages.map((lang) => (
+                      <span
+                        key={lang}
+                        className="language-badge text-xs px-2 py-1 rounded-full border"
+                      >
+                        {lang}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+
                 <p className="text-sm mt-2 text-muted-foreground">{p.description}</p>
-                <div className="mt-5 flex gap-2">
-                  {/* Single rounded button matching site style: View Source */}
+
+                {/* what I learned */}
+                {p.learned && p.learned.length > 0 ? (
+                  <div className="mt-3 text-sm text-muted-foreground">
+                    <strong className="text-sm">What I learned: </strong>
+                    <span>{p.learned.join(" • ")}</span>
+                  </div>
+                ) : null}
+                {/* place View Source at bottom of the card */}
+                <div className="mt-4 flex gap-2">
                   {(p.repo ?? p.url) ? (
                     <a
                       className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-9 px-3"
